@@ -54,6 +54,7 @@ export default function SplitScreen() {
                 _hover={{
                   color: "black",
                 }}
+                w={"100%"}
               >
                 Get Started
               </Button>
@@ -65,6 +66,7 @@ export default function SplitScreen() {
                 _hover={{
                   color: "black",
                 }}
+                w={"100%"}
               >
                 Find Job
               </Button>

@@ -16,7 +16,7 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link as ReactRouterLink } from "react-router-dom";
 
-const WithSubnavigation = () => {
+const Header = () => {
   const { isOpen, onToggle } = useDisclosure();
   const bg = useColorModeValue("red.500", "red.200");
 
@@ -24,7 +24,7 @@ const WithSubnavigation = () => {
     <Box>
       <Flex
         bg="#1A365D"
-        color={useColorModeValue("white")}
+        color={"white"}
         minH={"60px"}
         py={{ base: 2 }}
         px={{ base: 4 }}
@@ -139,12 +139,7 @@ const DesktopNav = () => {
 
 const MobileNav = () => {
   return (
-    <Stack
-      bg={useColorModeValue("blue.900")}
-      p={4}
-      spacing={4}
-      display={{ md: "none" }}
-    >
+    <Stack bg={"blue.900"} p={4} spacing={4} display={{ md: "none" }}>
       <Stack color={"white"}>
         <ReactRouterLink to="/">Home</ReactRouterLink>
         <ReactRouterLink to="/about">About</ReactRouterLink>
@@ -166,7 +161,6 @@ const MobileNav = () => {
         _hover={{
           bg: "blue.50",
         }}
-        isFullWidth={false}
       >
         Login
       </Button>
@@ -183,7 +177,6 @@ const MobileNav = () => {
         _hover={{
           bg: "blue.50",
         }}
-        isFullWidth={false}
       >
         Sign Up
       </Button>
@@ -210,4 +203,4 @@ const MobileNavItem = ({ label, href }) => {
   );
 };
 
-export default WithSubnavigation;
+export default Header;

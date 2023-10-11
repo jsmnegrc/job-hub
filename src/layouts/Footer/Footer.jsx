@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Box,
   Container,
@@ -19,6 +17,7 @@ export default function SmallWithNavigation() {
         spacing={4}
         justify={{ base: "center", md: "space-between" }}
         align={{ base: "center", md: "center" }}
+        height={100}
       >
         <Stack direction={"row"} spacing={6} color={"white"}>
           <Box as="a" href={"/"}>
