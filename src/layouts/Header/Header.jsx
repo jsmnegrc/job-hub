@@ -1,41 +1,213 @@
 import React from "react";
-import { Button, Container, Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import "./Header.css";
+import {
+  Box,
+  Flex,
+  Text,
+  IconButton,
+  Button,
+  Stack,
+  Collapse,
+  Link,
+  useColorModeValue,
+  useBreakpointValue,
+  useDisclosure,
+  Center,
+} from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { Link as ReactRouterLink } from "react-router-dom";
 
-const Header = () => {
+const WithSubnavigation = () => {
+  const { isOpen, onToggle } = useDisclosure();
+  const bg = useColorModeValue("red.500", "red.200");
+
   return (
-    <Navbar expand="lg" className="bg-nav">
-      <Container className="p-2">
-        <Navbar.Brand className="text-light fw-bold" as={Link} to="/">
-          LOGO
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav
-            className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: "100px" }}
-            navbarScroll
+    <Box>
+      <Flex
+        bg="#1A365D"
+        color={useColorModeValue("white")}
+        minH={"60px"}
+        py={{ base: 2 }}
+        px={{ base: 4 }}
+        borderBottom={1}
+        borderStyle={"solid"}
+        align={"center"}
+      >
+        <Flex
+          flex={{ base: 1, md: "auto" }}
+          ml={{ base: -2 }}
+          display={{ base: "flex", md: "none" }}
+        >
+          <IconButton
+            bg={"blue.50"}
+            onClick={onToggle}
+            icon={
+              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+            }
+            variant={"ghost"}
+            aria-label={"Toggle Navigation"}
+          />
+        </Flex>
+
+        <Flex
+          p={4}
+          flex={{ base: 1 }}
+          justify={{ base: "center", md: "start" }}
+          align="center"
+        >
+          <Text
+            as="b"
+            fontSize={"2xl"}
+            textAlign={useBreakpointValue({ base: "center", md: "left" })}
+            fontFamily={"heading"}
+            color={useColorModeValue("white")}
           >
-            <Nav.Link className="text-light" as={Link} to="/">
-              Home
-            </Nav.Link>
-            <Nav.Link className="text-light" as={Link} to="/about">
-              About
-            </Nav.Link>
-            <Nav.Link className="text-light" as={Link} to="/book">
-              Book
-            </Nav.Link>
-            <Nav.Link className="text-light" as={Link} to="/contact">
-              Contact
-            </Nav.Link>
-          </Nav>
-          <Button className="btn btn-warning fw-semibold me-2">Login</Button>
-          <Button className="btn btn-warning fw-semibold">Sign Up</Button>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+            Job Hub
+          </Text>
+          <Flex display={{ base: "none", md: "flex" }} ml={10} align="center">
+            <DesktopNav />
+          </Flex>
+        </Flex>
+
+        <Stack
+          flex={{ base: 1, md: 0 }}
+          justify={"center"}
+          direction={"row"}
+          spacing={3}
+        >
+          <Button
+            as={"a"}
+            display={{ base: "none", md: "inline-flex" }}
+            fontSize={"sm"}
+            fontWeight={600}
+            color={"black"}
+            bg={"blue.300"}
+            href={"#"}
+            _hover={{
+              bg: "blue.50",
+            }}
+          >
+            Login
+          </Button>
+          <Button
+            as={"a"}
+            display={{ base: "none", md: "inline-flex" }}
+            fontSize={"sm"}
+            fontWeight={600}
+            color={"black"}
+            bg={"blue.300"}
+            href={"#"}
+            _hover={{
+              bg: "blue.50",
+            }}
+          >
+            Sign Up
+          </Button>
+        </Stack>
+      </Flex>
+
+      <Collapse in={isOpen} animateOpacity>
+        <MobileNav />
+      </Collapse>
+    </Box>
   );
 };
 
-export default Header;
+const DesktopNav = () => {
+  return (
+    <Stack
+      direction={"row"}
+      spacing={4}
+      color={"white"}
+      justify="center"
+      align="center"
+    >
+      <Flex>
+        <ReactRouterLink to="/">Home</ReactRouterLink>
+      </Flex>
+      <Flex>
+        <ReactRouterLink to="/about">About</ReactRouterLink>
+      </Flex>
+      <Flex>
+        <ReactRouterLink to="/job">Job Board</ReactRouterLink>
+      </Flex>
+      <Flex>
+        <ReactRouterLink to="/contact">Contact</ReactRouterLink>
+      </Flex>
+    </Stack>
+  );
+};
+
+const MobileNav = () => {
+  return (
+    <Stack
+      bg={useColorModeValue("blue.900")}
+      p={4}
+      spacing={4}
+      display={{ md: "none" }}
+    >
+      <Stack color={"white"}>
+        <ReactRouterLink to="/">Home</ReactRouterLink>
+        <ReactRouterLink to="/about">About</ReactRouterLink>
+        <ReactRouterLink to="/job">Job Board</ReactRouterLink>
+        <ReactRouterLink to="/contact">Contact</ReactRouterLink>
+      </Stack>
+
+      <Button
+        mt={5}
+        mr={2}
+        as={ReactRouterLink}
+        to="#"
+        size="sm"
+        fontSize="sm"
+        fontWeight={600}
+        color={"black"}
+        bg={"blue.100"}
+        href={"#"}
+        _hover={{
+          bg: "blue.50",
+        }}
+        isFullWidth={false}
+      >
+        Login
+      </Button>
+      <Button
+        mt={5}
+        as={ReactRouterLink}
+        to="#"
+        size="sm"
+        fontSize="sm"
+        fontWeight={600}
+        color="black"
+        bg={"blue.100"}
+        href={"#"}
+        _hover={{
+          bg: "blue.50",
+        }}
+        isFullWidth={false}
+      >
+        Sign Up
+      </Button>
+    </Stack>
+  );
+};
+
+const MobileNavItem = ({ label, href }) => {
+  const { isOpen, onToggle } = useDisclosure();
+
+  return (
+    <Stack spacing={4} onClick={onToggle}>
+      <Box py={2}>
+        <ReactRouterLink to={href ?? "#"}>
+          <Text
+            fontWeight={600}
+            color={useColorModeValue("gray.600", "gray.200")}
+          >
+            {label}
+          </Text>
+        </ReactRouterLink>
+      </Box>
+    </Stack>
+  );
+};
+
+export default WithSubnavigation;

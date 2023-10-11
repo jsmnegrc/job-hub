@@ -1,6 +1,6 @@
 import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
-import Book from "./pages/Book/Book";
+import Job from "./pages/Job/Job";
 import Contact from "./pages/Contact/Contact";
 
 const routes = [
@@ -13,8 +13,8 @@ const routes = [
     element: <About />,
   },
   {
-    path: "/book",
-    element: <Book />,
+    path: "/job",
+    element: <Job />,
   },
   {
     path: "/contact",
