@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Flex,
@@ -11,7 +10,6 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
-  Center,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link as ReactRouterLink } from "react-router-dom";
@@ -54,15 +52,18 @@ const Header = () => {
           justify={{ base: "center", md: "start" }}
           align="center"
         >
-          <Text
-            as="b"
-            fontSize={"2xl"}
-            textAlign={useBreakpointValue({ base: "center", md: "left" })}
-            fontFamily={"heading"}
-            color={useColorModeValue("white")}
-          >
-            Job Hub
-          </Text>
+          <Link href="/" style={{ textDecoration: "none" }}>
+            <Text
+              as="b"
+              fontSize={"2xl"}
+              textAlign={useBreakpointValue({ base: "center", md: "left" })}
+              fontFamily={"heading"}
+              color={useColorModeValue("white")}
+            >
+              Job Hub
+            </Text>
+          </Link>
+
           <Flex display={{ base: "none", md: "flex" }} ml={10} align="center">
             <DesktopNav />
           </Flex>
@@ -81,7 +82,7 @@ const Header = () => {
             fontWeight={600}
             color={"black"}
             bg={"blue.300"}
-            href={"#"}
+            href={"/login"}
             _hover={{
               bg: "blue.50",
             }}
@@ -95,7 +96,7 @@ const Header = () => {
             fontWeight={600}
             color={"black"}
             bg={"blue.300"}
-            href={"#"}
+            href={"/signup"}
             _hover={{
               bg: "blue.50",
             }}
@@ -128,7 +129,7 @@ const DesktopNav = () => {
         <ReactRouterLink to="/about">About</ReactRouterLink>
       </Flex>
       <Flex>
-        <ReactRouterLink to="/job">Job Board</ReactRouterLink>
+        <ReactRouterLink to="/job">Find Job</ReactRouterLink>
       </Flex>
       <Flex>
         <ReactRouterLink to="/contact">Contact</ReactRouterLink>
@@ -157,7 +158,7 @@ const MobileNav = () => {
         fontWeight={600}
         color={"black"}
         bg={"blue.100"}
-        href={"#"}
+        href={"/login"}
         _hover={{
           bg: "blue.50",
         }}
@@ -173,7 +174,7 @@ const MobileNav = () => {
         fontWeight={600}
         color="black"
         bg={"blue.100"}
-        href={"#"}
+        href={"signup"}
         _hover={{
           bg: "blue.50",
         }}
