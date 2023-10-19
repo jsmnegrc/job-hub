@@ -107,12 +107,12 @@ export default function Signup() {
   };
 
   return (
-    <Flex minH={"100vh"} align={"center"} justify={"center"}>
+    <Flex p="3" minH={"100vh"} align={"center"} justify={"center"}>
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Box rounded={"lg"} bg={"gray.50"} boxShadow={"lg"} p={8}>
           <Stack mb={8} align={"center"}>
             <Heading fontSize={"4xl"} textAlign={"center"}>
-              Sign up
+              Register
             </Heading>
             <Text fontSize={"lg"}>
               Empower Your Career Journey, Join Us Now!
@@ -137,22 +137,26 @@ export default function Signup() {
                 </FormControl>
               </Box>
               <Box>
-                <FormControl id="lastName" isRequired>
-                  <FormLabel>Last Name</FormLabel>
-                  <Input
-                    type="text"
-                    value={lastName}
-                    onChange={handleLastNameChange}
-                    autoComplete="family-name"
-                  />
-                  {lastNameError && (
-                    <Text color="red" fontSize="sm" mt={1}>
-                      {lastNameError}
-                    </Text>
-                  )}
+                <FormControl id="middle-Name" isRequired>
+                  <FormLabel>Middle Name</FormLabel>
+                  <Input type="text" autoComplete="family-name" />
                 </FormControl>
               </Box>
             </HStack>
+            <FormControl id="lastName" isRequired>
+              <FormLabel>Last Name</FormLabel>
+              <Input
+                type="text"
+                value={lastName}
+                onChange={handleLastNameChange}
+                autoComplete="family-name"
+              />
+              {lastNameError && (
+                <Text color="red" fontSize="sm" mt={1}>
+                  {lastNameError}
+                </Text>
+              )}
+            </FormControl>
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
               <Input
@@ -197,7 +201,7 @@ export default function Signup() {
                 </Text>
               )}
             </FormControl>
-            <Stack spacing={10} pt={2}>
+            <Stack spacing={10} pt={1}>
               <Button
                 loadingText="Submitting"
                 size="lg"
@@ -205,7 +209,7 @@ export default function Signup() {
                 variant={"solid"}
                 onClick={handleSubmit}
               >
-                Sign up
+                Register
               </Button>
             </Stack>
             <Stack pt={6}>

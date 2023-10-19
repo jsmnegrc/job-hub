@@ -96,12 +96,12 @@ const Header = () => {
             fontWeight={600}
             color={"black"}
             bg={"blue.300"}
-            href={"/signup"}
+            href={"/register"}
             _hover={{
               bg: "blue.50",
             }}
           >
-            Sign Up
+            Register
           </Button>
         </Stack>
       </Flex>

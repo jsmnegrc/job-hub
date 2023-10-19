@@ -57,6 +57,10 @@ export default function Login() {
     }
   };
 
+  function submit(e) {
+    e.preventDefault();
+  }
+
   return (
     <Flex minH={"100vh"} align={"center"} justify={"center"}>
       <Stack spacing={8} mx={"auto"} maxW={"xl"}>
@@ -119,11 +123,16 @@ export default function Login() {
             <Stack spacing={6} mt={3}>
               <Text textAlign={"center"}>
                 Don't have an account?{" "}
-                <Link href="/signup" color={"blue.400"}>
+                <Link href="/register" color={"blue.400"}>
                   Sign Up
                 </Link>
               </Text>
-              <Button bg={"blue.300"} variant={"solid"} onClick={handleSubmit}>
+              <Button
+                bg={"blue.300"}
+                variant={"solid"}
+                type="submit"
+                onClick={handleSubmit}
+              >
                 Login
               </Button>
             </Stack>

@@ -3,7 +3,7 @@ import About from "./pages/About/About";
 import Job from "./pages/Job/Job";
 import Contact from "./pages/Contact/Contact";
 import Login from "./access/login";
-import Signup from "./access/Signup";
+import Register from "./access/Register";
 import JobDetails from "./pages/Job/JobDetails";
 
 const routes = [
@@ -28,8 +28,8 @@ const routes = [
     element: <Login />,
   },
   {
-    path: "/signup",
-    element: <Signup />,
+    path: "/register",
+    element: <Register />,
   },
   {
     path: "/jobdetails",
