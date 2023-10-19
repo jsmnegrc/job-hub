@@ -38,37 +38,26 @@ const JobCard = () => {
         <Tag size="md" colorScheme="blue" ml="auto">
           Partime
         </Tag>
-        <Tag size="md" colorScheme="blue">
+        <Tag size="md" colorScheme="green">
           Featured
         </Tag>
       </Stack>
       <Stack p={2} color="gray.500" direction="row" alignItems="center" mt="2">
         <Stack direction="row" align="center">
           <FaBuilding color="gray.600" />
-          <Box color="gray.600">Icon</Box>
-          <Text fontSize="sm" ml="2">
-            Company
-          </Text>
+          <Box color="gray.600">Company</Box>
         </Stack>
         <Stack direction="row" align="center" ml="4">
-          <FaMapMarkerAlt color="gray.600" /> <Box color="gray.600">Icon</Box>
-          <Text fontSize="sm" ml="2">
-            Job Location
-          </Text>
+          <FaMapMarkerAlt color="gray.600" />{" "}
+          <Box color="gray.600"> Job Location</Box>
         </Stack>
         <Stack direction="row" align="center" ml="4">
           <FaCalendarAlt color="gray.600" />
-          <Box color="gray.600">Icon</Box>
-          <Text fontSize="sm" ml="2">
-            Job Date Posted
-          </Text>
+          <Box color="gray.600">Job Date Posted</Box>
         </Stack>
         <Stack direction="row" align="center" ml="4">
           <FaDollarSign color="gray.600" />
-          <Box color="gray.600">Icon</Box>
-          <Text fontSize="sm" ml="2">
-            Your Salary
-          </Text>
+          <Box color="gray.600">Your Salary</Box>
         </Stack>
       </Stack>
       <Stack

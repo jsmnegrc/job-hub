@@ -37,22 +37,12 @@ const Card = ({ heading, description, icon, href }) => {
         >
           {icon}
         </Flex>
-        <Box mt={2} mb={7}>
+        <Box mt={2} mb={5}>
           <Heading size="md">{heading}</Heading>
           <Text mt={1} fontSize={"sm"}>
             {description}
           </Text>
         </Box>
-        <Button
-          position="absolute"
-          bottom={4}
-          alignSelf="flex-start"
-          variant={"link"}
-          colorScheme={"blue"}
-          size={"sm"}
-        >
-          Learn more
-        </Button>
       </Stack>
     </Box>
   );

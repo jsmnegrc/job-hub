@@ -47,7 +47,7 @@ export default function SplitScreen() {
             connect, unleashing your full potential in every step."
           </Text>
           <Stack direction={{ base: "column", md: "row" }} spacing={4}>
-            <Link to="/">
+            <Link to="/about">
               <Button
                 bg={"blue.300"}
                 color={"white"}
