@@ -1,16 +1,12 @@
+import React, { useState } from "react";
 import {
-  Stack,
   Flex,
+  Stack,
   VStack,
-  useBreakpointValue,
   Text,
-  Button,
   Heading,
   Box,
-  Link,
   GridItem,
-  Image,
-  Tag,
   Input,
   Select,
   Radio,
@@ -22,18 +18,11 @@ import {
   SliderFilledTrack,
   SliderThumb,
   Tooltip,
-  Card,
+  Button,
 } from "@chakra-ui/react";
-import {
-  FaCalendarAlt,
-  FaDollarSign,
-  FaBuilding,
-  FaSearch,
-  FaBriefcase,
-  FaMapMarkerAlt,
-} from "react-icons/fa";
-import { useState } from "react";
+import { FaBriefcase, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 import JobImage from "../../assets/job.jpg";
+import JobCard from "./JobCard";
 
 export default function Job() {
   const [datePosted, setDatePosted] = useState("all");
@@ -53,7 +42,7 @@ export default function Job() {
           w="full"
           justify="center"
           align="start"
-          px={useBreakpointValue({ base: 4, md: 8 })}
+          px={{ base: 4, md: 8 }}
           bgGradient="linear(to-r, blackAlpha.600, transparent)"
         >
           <Stack maxW="2xl" spacing={6}>
@@ -63,7 +52,7 @@ export default function Job() {
               color="white"
               fontWeight={700}
               lineHeight={1.2}
-              fontSize={useBreakpointValue({ base: "3xl", md: "4xl" })}
+              fontSize={{ base: "3xl", md: "4xl" }}
             >
               Countless Careers, One Platform Kickstart Your Success Story Now
             </Text>
@@ -77,11 +66,11 @@ export default function Job() {
           colStart={{ base: 1, md: 1 }}
           colSpan={{ base: 1, md: 2 }}
         >
-          <Box p="4" boxShadow="lg" m="4" borderRadius="md" bg="gray.100">
-            <Heading fontWeight="semibold" mb="4">
+          <Box p={4} boxShadow="lg" m={4} borderRadius="md" bg="gray.100">
+            <Heading fontWeight="semibold" mb={4}>
               Job Search Filter
             </Heading>
-            <Stack spacing="4">
+            <Stack spacing={4}>
               <InputGroup>
                 <InputLeftElement
                   pointerEvents="none"
@@ -156,6 +145,7 @@ export default function Job() {
                   <SliderThumb />
                 </Tooltip>
               </Slider>
+
               <Button
                 leftIcon={<FaSearch />}
                 colorScheme="blue"
@@ -168,99 +158,13 @@ export default function Job() {
               </Button>
             </Stack>
           </Box>
-        </GridItem>{" "}
-        {/* Job Card */}
+        </GridItem>
         <GridItem
           mt={4}
           colStart={{ base: 1, md: 4 }}
           colSpan={{ base: 1, md: 3 }}
         >
-          <Card mr={6} p="4" boxShadow="lg" borderRadius="md" bg="white">
-            <Stack mb={2} direction="row" alignItems="center">
-              <Image
-                borderRadius={4}
-                src={JobImage}
-                alt="Company Logo"
-                boxSize={{ base: "40px", md: "60px" }}
-                ml={{ base: "0", md: "2" }}
-              />
-              <Flex align="center">
-                <Heading size={{ base: "md", md: "lg" }} fontWeight="semibold">
-                  Job Title
-                </Heading>
-              </Flex>
-              <Tag size="md" colorScheme="blue" ml="auto">
-                Partime
-              </Tag>
-              <Tag size="md" colorScheme="blue">
-                Featured
-              </Tag>
-            </Stack>
-            {/* Additional Information */}
-            <Stack
-              p={2}
-              color="gray.500"
-              direction="row"
-              alignItems="center"
-              mt="2"
-            >
-              {/* Job Title */}
-              <Stack direction="row" align="center">
-                <FaBuilding color="gray.600" />
-                <Text fontSize="sm" ml="2">
-                  Company
-                </Text>
-              </Stack>
-              {/* Location */}
-              <Stack direction="row" align="center" ml="4">
-                <FaMapMarkerAlt color="gray.600" />
-                <Text fontSize="sm" ml="2">
-                  Job Location
-                </Text>
-              </Stack>
-              {/* Date */}
-              <Stack direction="row" align="center" ml="4">
-                <FaCalendarAlt color="gray.600" />
-                <Text fontSize="sm" ml="2">
-                  Job Date Posted
-                </Text>
-              </Stack>
-              {/* Salary */}
-              <Stack direction="row" align="center" ml="4">
-                <FaDollarSign color="gray.600" />
-                <Text fontSize="sm" ml="2">
-                  Your Salary
-                </Text>
-              </Stack>
-            </Stack>
-            <Stack
-              p={2}
-              direction={{ base: "column", md: "row" }}
-              justifyContent="space-between"
-            >
-              {/* Text Content */}
-              <Text fontSize={{ base: "sm" }} textAlign="left" maxW="4xl">
-                We use cookies and similar technologies to help personalize
-                content, tailor and measure ads, and provide a better
-                experience. By clicking OK or turning an option on in Cookie
-                Preferences, you agree to this, as outlined in our Cookie
-                Policy.
-              </Text>
-
-              {/* Button and Image */}
-              <Stack
-                direction={{ base: "column", md: "row" }}
-                alignItems="center"
-              >
-                {/* Button */}
-                <Link href="">
-                  <Button variant="outline" colorScheme="blue">
-                    View Details
-                  </Button>
-                </Link>
-              </Stack>
-            </Stack>
-          </Card>
+          <JobCard />
         </GridItem>
       </Stack>
     </>
