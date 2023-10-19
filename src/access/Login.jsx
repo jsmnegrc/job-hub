@@ -14,13 +14,17 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import http from "../library/http";
 
 export default function Login() {
+  const api = http();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const handleEmailChange = (e) => {
     const inputValue = e.target.value;
@@ -38,6 +42,12 @@ export default function Login() {
     setPasswordError("");
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((showPassword) => !showPassword);
+  };
+
+  const toggleToast = () => setShowToast(!showToast);
+
   const handleSubmit = () => {
     if (!email) {
       setEmailError("Email is required");
@@ -53,12 +63,33 @@ export default function Login() {
     }
 
     if (!emailError && !passwordError) {
-      console.log("Form submitted!");
+      login();
     }
   };
 
-  function submit(e) {
-    e.preventDefault();
+  async function login(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    try {
+      const body = {
+        username: email,
+        password,
+      };
+      console.log("/login", body);
+
+      const response = await api.post("/login", body);
+      console.log("Response:", response);
+      // Handle successful login, e.g., redirect to another page
+    } catch (error) {
+      console.error(error);
+      const errorMessage =
+        error.response?.data?.message ||
+        "Login failed. Please check your credentials.";
+      setToastMessage(errorMessage);
+      setShowToast(true);
+    }
   }
 
   return (
@@ -96,19 +127,14 @@ export default function Login() {
               <FormLabel>Password</FormLabel>
               <InputGroup>
                 <Input
-                  type={showPassword ? "text" : "password"}
                   value={password}
+                  type={showPassword ? "text" : "password"}
                   onChange={handlePasswordChange}
                   size="lg"
                   autoComplete="off"
                 />
                 <InputRightElement h={"full"}>
-                  <Button
-                    variant={"ghost"}
-                    onClick={() =>
-                      setShowPassword((showPassword) => !showPassword)
-                    }
-                  >
+                  <Button variant={"ghost"} onClick={togglePasswordVisibility}>
                     {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                   </Button>
                 </InputRightElement>
@@ -119,7 +145,6 @@ export default function Login() {
                 </Text>
               )}
             </FormControl>
-
             <Stack spacing={6} mt={3}>
               <Text textAlign={"center"}>
                 Don't have an account?{" "}
@@ -129,9 +154,9 @@ export default function Login() {
               </Text>
               <Button
                 bg={"blue.300"}
+                onClick={handleSubmit}
                 variant={"solid"}
                 type="submit"
-                onClick={handleSubmit}
               >
                 Login
               </Button>
@@ -139,6 +164,19 @@ export default function Login() {
           </Stack>
         </Box>
       </Stack>
+      {showToast && (
+        <Box
+          position="absolute"
+          top="20px"
+          right="20px"
+          backgroundColor="red"
+          color="white"
+          padding="10px"
+          borderRadius="md"
+        >
+          {toastMessage}
+        </Box>
+      )}
     </Flex>
   );
 }
