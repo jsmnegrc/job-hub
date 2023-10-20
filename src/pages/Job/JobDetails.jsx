@@ -208,19 +208,19 @@ export default function JobDetails() {
                       <InputLeftElement pointerEvents="none">
                         <FaUserAlt color="gray.800" />
                       </InputLeftElement>
-                      <Input type="text" size="md" />
+                      <Input type="text" size="md" autoComplete="name" />
                     </InputGroup>
                   </FormControl>
-                  <FormControl id="name">
+                  <FormControl id="email">
                     <FormLabel>Mail</FormLabel>
                     <InputGroup borderColor="#E0E1E7">
                       <InputLeftElement pointerEvents="none">
                         <MdOutlineEmail color="gray.800" />
                       </InputLeftElement>
-                      <Input type="text" size="md" />
+                      <Input type="text" size="md" autoComplete="email" />
                     </InputGroup>
                   </FormControl>
-                  <FormControl id="name">
+                  <FormControl id="message">
                     <FormLabel>Message</FormLabel>
                     <Textarea
                       borderColor="gray.300"
@@ -228,6 +228,7 @@ export default function JobDetails() {
                         borderRadius: "gray.300",
                       }}
                       placeholder="message"
+                      autoComplete="message"
                     />
                   </FormControl>
                   <FormControl id="name" float="right">

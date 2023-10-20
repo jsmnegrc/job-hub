@@ -12,85 +12,53 @@ import {
   Box,
   InputGroup,
   InputRightElement,
+  useToast,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 import http from "../library/http";
 
-export default function Login() {
+const Login = () => {
   const api = http();
+  const [username, setUsername] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const navigate = useNavigate();
+  const toast = useToast();
 
-  const handleEmailChange = (e) => {
-    const inputValue = e.target.value;
-    setEmail(inputValue);
-    setEmailError("");
+  async function submit(e) {
+    e.preventDefault();
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (inputValue && !emailRegex.test(inputValue)) {
-      setEmailError("Invalid email format");
+    try {
+      const body = {
+        username,
+        password,
+      };
+
+      const user = await api.post("/login", body);
+      console.log(user);
+      localStorage.setItem("token", user.data.token);
+      localStorage.setItem("user", JSON.stringify(user.data.user));
+
+      window.dispatchEvent(new Event("storage"));
+      navigate("/");
+    } catch (e) {
+      console.log(e.response.data.message);
+
+      toast({
+        title: "Error",
+        description: "Login failed. Please check your credentials.",
+        status: "error",
+        duration: 5000,
+        position: "top",
+        isClosable: true,
+      });
     }
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    setPasswordError("");
-  };
+  }
 
   const togglePasswordVisibility = () => {
     setShowPassword((showPassword) => !showPassword);
   };
-
-  const toggleToast = () => setShowToast(!showToast);
-
-  const handleSubmit = () => {
-    if (!email) {
-      setEmailError("Email is required");
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        setEmailError("Invalid email format");
-      }
-    }
-
-    if (!password) {
-      setPasswordError("Password is required");
-    }
-
-    if (!emailError && !passwordError) {
-      login();
-    }
-  };
-
-  async function login(e) {
-    if (e) {
-      e.preventDefault();
-    }
-
-    try {
-      const body = {
-        username: email,
-        password,
-      };
-      console.log("/login", body);
-
-      const response = await api.post("/login", body);
-      console.log("Response:", response);
-      // Handle successful login, e.g., redirect to another page
-    } catch (error) {
-      console.error(error);
-      const errorMessage =
-        error.response?.data?.message ||
-        "Login failed. Please check your credentials.";
-      setToastMessage(errorMessage);
-      setShowToast(true);
-    }
-  }
 
   return (
     <Flex minH={"100vh"} align={"center"} justify={"center"}>
@@ -108,20 +76,15 @@ export default function Login() {
             <Heading mb={6} fontSize={"4xl"}>
               Welcome Back
             </Heading>
-            <FormControl id="email" isRequired>
-              <FormLabel>Email address</FormLabel>
+            <FormControl id="username" isRequired>
+              <FormLabel>Username</FormLabel>
               <Input
-                type="email"
-                value={email}
-                onChange={handleEmailChange}
+                type="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 size="lg"
                 autoComplete="off"
               />
-              {emailError && (
-                <Text color="red" fontSize="sm" mt={1}>
-                  {emailError}
-                </Text>
-              )}
             </FormControl>
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
@@ -129,7 +92,7 @@ export default function Login() {
                 <Input
                   value={password}
                   type={showPassword ? "text" : "password"}
-                  onChange={handlePasswordChange}
+                  onChange={(e) => setPassword(e.target.value)}
                   size="lg"
                   autoComplete="off"
                 />
@@ -139,11 +102,6 @@ export default function Login() {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-              {passwordError && (
-                <Text color="red" fontSize="sm" mt={1}>
-                  {passwordError}
-                </Text>
-              )}
             </FormControl>
             <Stack spacing={6} mt={3}>
               <Text textAlign={"center"}>
@@ -154,7 +112,7 @@ export default function Login() {
               </Text>
               <Button
                 bg={"blue.300"}
-                onClick={handleSubmit}
+                onClick={submit}
                 variant={"solid"}
                 type="submit"
               >
@@ -164,19 +122,8 @@ export default function Login() {
           </Stack>
         </Box>
       </Stack>
-      {showToast && (
-        <Box
-          position="absolute"
-          top="20px"
-          right="20px"
-          backgroundColor="red"
-          color="white"
-          padding="10px"
-          borderRadius="md"
-        >
-          {toastMessage}
-        </Box>
-      )}
     </Flex>
   );
-}
+};
+
+export default Login;

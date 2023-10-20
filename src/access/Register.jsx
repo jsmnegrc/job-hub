@@ -12,98 +12,63 @@ import {
   Heading,
   Text,
   Link,
+  Alert,
+  AlertIcon,
+  CloseButton,
 } from "@chakra-ui/react";
+import http from "../library/http";
 
 export default function Signup() {
+  const api = http();
+  const [formData, setFormData] = useState({
+    username: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [formErrors, setFormErrors] = useState({});
+  const [showToast, setShowToast] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [firstNameError, setFirstNameError] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
-  const handleFirstNameChange = (e) => {
-    setFirstName(e.target.value);
-    setFirstNameError("");
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleLastNameChange = (e) => {
-    setLastName(e.target.value);
-    setLastNameError("");
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    setEmailError("");
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    validateForm();
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    setPasswordError("");
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-    setConfirmPasswordError("");
-  };
-
-  const handleSubmit = () => {
-    setFirstNameError("");
-    setLastNameError("");
-    setEmailError("");
-    setPasswordError("");
-    setConfirmPasswordError("");
-
-    if (!firstName) {
-      setFirstNameError("First Name is required");
-    }
-
-    if (!lastName) {
-      setLastNameError("Last Name is required");
-    }
-
-    if (!email) {
-      setEmailError("Email is required");
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        setEmailError("Invalid email format");
+    if (Object.keys(formErrors).length === 0) {
+      try {
+        const response = await api.post("/register", formData);
+        console.log(response);
+      } catch (error) {
+        console.error("Registration failed:", error);
+        setToastMessage("Registration failed. Please check your information.");
+        setShowToast(true);
       }
+    } else {
+      setToastMessage("Please correct the errors in the form.");
+      setShowToast(true);
     }
+  };
 
-    if (!password) {
-      setPasswordError("Password is required");
-    }
+  const validateForm = () => {
+    const errors = {};
 
-    if (!confirmPassword) {
-      setConfirmPasswordError("Confirm Password is required");
-    } else if (confirmPassword !== password) {
-      setConfirmPasswordError("Password do not match");
-    }
+    setFormErrors(errors);
+  };
 
-    if (
-      firstNameError ||
-      lastNameError ||
-      emailError ||
-      passwordError ||
-      confirmPasswordError
-    ) {
-      console.error("Form submission failed. Validation errors:", {
-        firstNameError,
-        lastNameError,
-        emailError,
-        passwordError,
-        confirmPasswordError,
-      });
-      return;
-    }
-
-    console.log("Form submitted!");
+  const handleToastClose = () => {
+    setShowToast(false);
   };
 
   return (
@@ -118,109 +83,136 @@ export default function Signup() {
               Empower Your Career Journey, Join Us Now!
             </Text>
           </Stack>
-          <Stack spacing={5}>
-            <HStack mt={5}>
-              <Box>
-                <FormControl id="firstName" isRequired>
-                  <FormLabel>First Name</FormLabel>
-                  <Input
-                    type="text"
-                    value={firstName}
-                    onChange={handleFirstNameChange}
-                    autoComplete="given-name"
-                  />
-                  {firstNameError && (
-                    <Text color="red" fontSize="sm" mt={1}>
-                      {firstNameError}
-                    </Text>
-                  )}
-                </FormControl>
-              </Box>
-              <Box>
-                <FormControl id="middle-Name" isRequired>
-                  <FormLabel>Middle Name</FormLabel>
-                  <Input type="text" autoComplete="family-name" />
-                </FormControl>
-              </Box>
-            </HStack>
-            <FormControl id="lastName" isRequired>
-              <FormLabel>Last Name</FormLabel>
-              <Input
-                type="text"
-                value={lastName}
-                onChange={handleLastNameChange}
-                autoComplete="family-name"
-              />
-              {lastNameError && (
-                <Text color="red" fontSize="sm" mt={1}>
-                  {lastNameError}
-                </Text>
-              )}
-            </FormControl>
-            <FormControl id="email" isRequired>
-              <FormLabel>Email address</FormLabel>
-              <Input
-                type="email"
-                value={email}
-                onChange={handleEmailChange}
-                autoComplete="email"
-              />
-              {emailError && (
-                <Text color="red" fontSize="sm" mt={1}>
-                  {emailError}
-                </Text>
-              )}
-            </FormControl>
-            <FormControl id="password" isRequired>
-              <FormLabel>Password</FormLabel>
-              <InputGroup>
+          <form onSubmit={handleSubmit}>
+            <Stack spacing={5}>
+              <HStack mt={5}>
+                <Box>
+                  <FormControl id="firstName" isRequired>
+                    <FormLabel>First Name</FormLabel>
+                    <Input
+                      type="text"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      autoComplete="given-name"
+                    />
+                    {formErrors.firstName && (
+                      <Text color="red" fontSize="sm" mt={1}>
+                        {formErrors.firstName}
+                      </Text>
+                    )}
+                  </FormControl>
+                </Box>
+                <Box>
+                  <FormControl id="middleName" isRequired>
+                    <FormLabel>Middle Name</FormLabel>
+                    <Input
+                      type="text"
+                      name="middleName"
+                      value={formData.middleName}
+                      onChange={handleInputChange}
+                      autoComplete="family-name"
+                    />
+                  </FormControl>
+                </Box>
+              </HStack>
+              <FormControl id="lastName" isRequired>
+                <FormLabel>Last Name</FormLabel>
                 <Input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={handlePasswordChange}
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  autoComplete="family-name"
+                />
+                {formErrors.lastName && (
+                  <Text color="red" fontSize="sm" mt={1}>
+                    {formErrors.lastName}
+                  </Text>
+                )}
+              </FormControl>
+              <FormControl id="email" isRequired>
+                <FormLabel>Email address</FormLabel>
+                <Input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  autoComplete="email"
+                />
+                {formErrors.email && (
+                  <Text color="red" fontSize="sm" mt={1}>
+                    {formErrors.email}
+                  </Text>
+                )}
+              </FormControl>
+              <FormControl id="password" isRequired>
+                <FormLabel>Password</FormLabel>
+                <InputGroup>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    autoComplete="new-password"
+                  />
+                </InputGroup>
+                {formErrors.password && (
+                  <Text color="red" fontSize="sm" mt={1}>
+                    {formErrors.password}
+                  </Text>
+                )}
+              </FormControl>
+              <FormControl id="confirmPassword" isRequired>
+                <FormLabel>Confirm Password</FormLabel>
+                <Input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
                   autoComplete="new-password"
                 />
-              </InputGroup>
-              {passwordError && (
-                <Text color="red" fontSize="sm" mt={1}>
-                  {passwordError}
+                {formErrors.confirmPassword && (
+                  <Text color="red" fontSize="sm" mt={1}>
+                    {formErrors.confirmPassword}
+                  </Text>
+                )}
+              </FormControl>
+              <Stack spacing={10} pt={1}>
+                <Button
+                  loadingText="Submitting"
+                  size="lg"
+                  bg={"blue.300"}
+                  variant={"solid"}
+                  type="submit"
+                >
+                  Register
+                </Button>
+              </Stack>
+              <Stack pt={6}>
+                <Text align={"center"}>
+                  Already a user?{" "}
+                  <Link href="/login" color={"blue.400"}>
+                    Login
+                  </Link>
                 </Text>
-              )}
-            </FormControl>
-            <FormControl id="confirmPassword" isRequired>
-              <FormLabel>Confirm Password</FormLabel>
-              <Input
-                type="password"
-                value={confirmPassword}
-                onChange={handleConfirmPasswordChange}
-                autoComplete="new-password"
-              />
-              {confirmPasswordError && (
-                <Text color="red" fontSize="sm" mt={1}>
-                  {confirmPasswordError}
-                </Text>
-              )}
-            </FormControl>
-            <Stack spacing={10} pt={1}>
-              <Button
-                loadingText="Submitting"
-                size="lg"
-                bg={"blue.300"}
-                variant={"solid"}
-                onClick={handleSubmit}
-              >
-                Register
-              </Button>
+              </Stack>
             </Stack>
-            <Stack pt={6}>
-              <Text align={"center"}>
-                Already a user?{" "}
-                <Link href="/login" color={"blue.400"}>
-                  Login
-                </Link>
+          </form>
+          {showToast && (
+            <Alert status="error" mt={4}>
+              <AlertIcon />
+              <Text fontSize="sm" ml={2}>
+                Form submission failed. Please check your information.
               </Text>
-            </Stack>
-          </Stack>
+              <CloseButton
+                onClick={handleToastClose}
+                position="absolute"
+                right="8px"
+                top="8px"
+              />
+            </Alert>
+          )}
         </Box>
       </Stack>
     </Flex>
