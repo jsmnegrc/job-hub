@@ -4,7 +4,6 @@ import Job from "./pages/Job/Job";
 import Contact from "./pages/Contact/Contact";
 import Login from "./access/login";
 import Register from "./access/Register";
-import JobDetails from "./pages/Job/JobDetails";
 
 const routes = [
   {
@@ -30,10 +29,6 @@ const routes = [
   {
     path: "/register",
     element: <Register />,
-  },
-  {
-    path: "/jobdetails",
-    element: <JobDetails />,
   },
 ];
 

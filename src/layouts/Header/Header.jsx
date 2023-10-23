@@ -129,7 +129,7 @@ const DesktopNav = () => {
         <ReactRouterLink to="/about">About</ReactRouterLink>
       </Flex>
       <Flex>
-        <ReactRouterLink to="/job">Find Job</ReactRouterLink>
+        <ReactRouterLink to="/jobcard">Find Job</ReactRouterLink>
       </Flex>
       <Flex>
         <ReactRouterLink to="/contact">Contact</ReactRouterLink>

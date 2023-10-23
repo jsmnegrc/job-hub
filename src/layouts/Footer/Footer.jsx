@@ -26,7 +26,7 @@ export default function SmallWithNavigation() {
           <Box as="a" href={"/about"}>
             About
           </Box>
-          <Box as="a" href={"/job"}>
+          <Box as="a" href={"/jobcard"}>
             Job Board
           </Box>
           <Box as="a" href={"/contact"}>
