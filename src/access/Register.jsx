@@ -23,16 +23,25 @@ const Register = () => {
     last_name: "",
     email: "",
     password: "",
-    password_confirmation: "",
+    password_confirmed: "",
   });
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    if (name === "password" || name === "password_confirmed") {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -134,8 +143,8 @@ const Register = () => {
               <FormLabel>Confirm Password</FormLabel>
               <Input
                 type="password"
-                name="password_confirmation"
-                value={formData.password_confirmation}
+                name="password_confirmed"
+                value={formData.password_confirmed}
                 onChange={handleChange}
                 size="lg"
                 autoComplete="off"

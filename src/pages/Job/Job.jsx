@@ -27,14 +27,12 @@ import {
   FaDollarSign,
   FaBuilding,
   FaBriefcase,
-  FaClock,
 } from "react-icons/fa";
-
 import JobLogo from "../../assets/joblogo.jpg";
 import http from "../../library/http";
 import { useParams } from "react-router-dom";
 
-const JobCard = () => {
+const Job = () => {
   const { jobId } = useParams();
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,27 +50,15 @@ const JobCard = () => {
       console.error("Error fetching jobs:", error);
     }
   };
-  const indexOfLastJob = currentPage * jobsPerPage;
-  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
-
-  function formatJobType(jobTypes) {
-    const formattedString = jobTypes
-      .replace(/_/g, " ")
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-
-    return formattedString;
-  }
 
   const [searchTerm, setSearchTerm] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
-  const [employmentType, setEmploymentType] = useState(""); // Added employment type filter state
+  const [employmentType, setEmploymentType] = useState("");
   const [minSalary, setMinSalary] = useState("");
   const [maxSalary, setMaxSalary] = useState("");
 
+  // Move the declaration of filteredJobs here
   const filteredJobs = jobs.filter((job) => {
     const titleMatch = job.title
       .toLowerCase()
@@ -95,6 +81,14 @@ const JobCard = () => {
     );
   });
 
+  // Use currentFilteredJobs where needed
+  const indexOfLastFilteredJob = currentPage * jobsPerPage;
+  const indexOfFirstFilteredJob = indexOfLastFilteredJob - jobsPerPage;
+  const currentFilteredJobs = filteredJobs.slice(
+    indexOfFirstFilteredJob,
+    indexOfLastFilteredJob
+  );
+
   const handlePaginationClick = (pageIndex) => {
     setCurrentPage(pageIndex);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -102,13 +96,14 @@ const JobCard = () => {
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
-    setCurrentPage(1); // Reset to the first page when the search term changes
+    setCurrentPage(1);
   };
 
   const handleDateFilterChange = (event) => {
     setDateFilter(event.target.value);
-    setCurrentPage(1); // Reset to the first page when the date filter changes
+    setCurrentPage(1);
   };
+
   const handleFeatureFilterChange = (isChecked) => {
     setIsFeatured(isChecked);
     setCurrentPage(1);
@@ -116,8 +111,9 @@ const JobCard = () => {
 
   const handleEmploymentTypeChange = (event) => {
     setEmploymentType(event.target.value);
-    setCurrentPage(1); // Reset to the first page when the employment type filter changes
+    setCurrentPage(1);
   };
+
   const handleMinSalaryChange = (value) => {
     setMinSalary(value);
     setCurrentPage(1);
@@ -137,6 +133,16 @@ const JobCard = () => {
     setMaxSalary("");
     setCurrentPage(1);
   };
+
+  function formatJobType(jobTypes) {
+    const formattedString = jobTypes
+      .replace(/_/g, " ")
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+
+    return formattedString;
+  }
 
   return (
     <Stack p={5}>
@@ -173,7 +179,6 @@ const JobCard = () => {
                   onChange={handleDateFilterChange}
                 />
               </InputGroup>
-              {/* Employment Type Filters Checkboxes */}
               <InputGroup mb={3}>
                 <Select
                   id="employment"
@@ -235,9 +240,8 @@ const JobCard = () => {
         </Box>
 
         <GridItem colSpan={{ base: "1", md: "1" }}>
-          {/* ... (existing job cards section) */}
-          {currentJobs.length > 0 ? (
-            currentJobs.map((job) => (
+          {currentFilteredJobs.length > 0 ? (
+            currentFilteredJobs.map((job) => (
               <Card
                 mb={5}
                 key={job.id}
@@ -334,5 +338,4 @@ const JobCard = () => {
     </Stack>
   );
 };
-
-export default JobCard;
+export default Job;
