@@ -31,6 +31,7 @@ import {
 import JobLogo from "../../assets/joblogo.jpg";
 import http from "../../library/http";
 import { useParams } from "react-router-dom";
+import JobHero from "./JobHero";
 
 const Job = () => {
   const { jobId } = useParams();
@@ -81,7 +82,6 @@ const Job = () => {
     );
   });
 
-  // Use currentFilteredJobs where needed
   const indexOfLastFilteredJob = currentPage * jobsPerPage;
   const indexOfFirstFilteredJob = indexOfLastFilteredJob - jobsPerPage;
   const currentFilteredJobs = filteredJobs.slice(
@@ -114,6 +114,7 @@ const Job = () => {
     setCurrentPage(1);
   };
 
+  // Salary
   const handleMinSalaryChange = (value) => {
     setMinSalary(value);
     setCurrentPage(1);
@@ -145,197 +146,200 @@ const Job = () => {
   }
 
   return (
-    <Stack p={5}>
-      <Grid templateColumns={{ base: "1fr", md: "300px 1fr" }} gap={4}>
-        <Box bg={"blackAlpha.50"}>
+    <>
+      <JobHero />
+      <Stack p={5}>
+        <Grid templateColumns={{ base: "1fr", md: "300px 1fr" }} gap={4}>
+          <Box bg={"blackAlpha.50"}>
+            <GridItem colSpan={{ base: "1", md: "1" }}>
+              <Stack mt={5} p={5}>
+                <Heading fontWeight="semibold" mb={4}>
+                  Job Search Filter
+                </Heading>
+                <InputGroup mb={3}>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<FaBriefcase />}
+                  />
+                  <Input
+                    id="title"
+                    type="title"
+                    placeholder="Search by Job Title"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                </InputGroup>
+                <InputGroup mb={3}>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<FaCalendarAlt />}
+                  />
+                  <Input
+                    id="date"
+                    type="date"
+                    placeholder="Filter by date (e.g., '2023-10-23')"
+                    value={dateFilter}
+                    onChange={handleDateFilterChange}
+                  />
+                </InputGroup>
+                <InputGroup mb={3}>
+                  <Select
+                    id="employment"
+                    mb={2}
+                    value={employmentType}
+                    onChange={handleEmploymentTypeChange}
+                  >
+                    <option value="">Employment Types</option>
+                    <option value="full_time">Full Time</option>
+                    <option value="part_time">Part Time</option>
+                  </Select>
+                </InputGroup>
+                <Checkbox
+                  id="featured"
+                  mb={3}
+                  isChecked={isFeatured}
+                  onChange={(e) => handleFeatureFilterChange(e.target.checked)}
+                >
+                  Featured Jobs
+                </Checkbox>
+                <InputGroup mb={5}>
+                  <FaDollarSign color="gray.600" />
+                  <NumberInput
+                    id="minsalary"
+                    ml="2"
+                    size="sm"
+                    value={minSalary}
+                    onChange={handleMinSalaryChange}
+                    placeholder="Min Salary"
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                  <Text ml="2" mr="1">
+                    to
+                  </Text>
+                  <NumberInput
+                    id="maxsalary"
+                    size="sm"
+                    value={maxSalary}
+                    onChange={handleMaxSalaryChange}
+                    placeholder="Max Salary"
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </InputGroup>
+                <Button bg="blue.300" onClick={handleClearFilters}>
+                  Clear Filters
+                </Button>
+              </Stack>
+            </GridItem>
+          </Box>
+
           <GridItem colSpan={{ base: "1", md: "1" }}>
-            <Stack mt={5} p={5}>
-              <Heading fontWeight="semibold" mb={4}>
-                Job Search Filter
-              </Heading>
-              <InputGroup mb={3}>
-                <InputLeftElement
-                  pointerEvents="none"
-                  children={<FaBriefcase />}
-                />
-                <Input
-                  id="title"
-                  type="title"
-                  placeholder="Search by Job Title"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-              </InputGroup>
-              <InputGroup mb={3}>
-                <InputLeftElement
-                  pointerEvents="none"
-                  children={<FaCalendarAlt />}
-                />
-                <Input
-                  id="date"
-                  type="date"
-                  placeholder="Filter by date (e.g., '2023-10-23')"
-                  value={dateFilter}
-                  onChange={handleDateFilterChange}
-                />
-              </InputGroup>
-              <InputGroup mb={3}>
-                <Select
-                  id="employment"
-                  mb={2}
-                  value={employmentType}
-                  onChange={handleEmploymentTypeChange}
+            {currentFilteredJobs.length > 0 ? (
+              currentFilteredJobs.map((job) => (
+                <Card
+                  mb={5}
+                  key={job.id}
+                  mr={6}
+                  p="4"
+                  boxShadow="lg"
+                  borderRadius="md"
+                  bg="white"
                 >
-                  <option value="">Employment Types</option>
-                  <option value="full_time">Full Time</option>
-                  <option value="part_time">Part Time</option>
-                </Select>
-              </InputGroup>
-              <Checkbox
-                id="featured"
-                mb={3}
-                isChecked={isFeatured}
-                onChange={(e) => handleFeatureFilterChange(e.target.checked)}
-              >
-                Featured Jobs
-              </Checkbox>
-              <InputGroup mb={5}>
-                <FaDollarSign color="gray.600" />
-                <NumberInput
-                  id="minsalary"
-                  ml="2"
-                  size="sm"
-                  value={minSalary}
-                  onChange={handleMinSalaryChange}
-                  placeholder="Min Salary"
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-                <Text ml="2" mr="1">
-                  to
-                </Text>
-                <NumberInput
-                  id="maxsalary"
-                  size="sm"
-                  value={maxSalary}
-                  onChange={handleMaxSalaryChange}
-                  placeholder="Max Salary"
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </InputGroup>
-              <Button bg="blue.300" onClick={handleClearFilters}>
-                Clear Filters
-              </Button>
+                  <Stack mb={2} direction="row" alignItems="center">
+                    <Image
+                      borderRadius={4}
+                      src={JobLogo}
+                      alt="Company Logo"
+                      boxSize={{ base: "40px", md: "60px" }}
+                      ml={{ base: "0", md: "2" }}
+                    />
+                    <Flex align="center">
+                      <Heading
+                        size={{ base: "md", md: "lg" }}
+                        fontWeight="semibold"
+                      >
+                        {job.title}
+                      </Heading>
+                    </Flex>
+                    <Tag size="md" colorScheme="blue" ml="auto">
+                      {formatJobType(job.job_types)}
+                    </Tag>
+                    {job.job_featured && (
+                      <Tag size="md" colorScheme="green">
+                        Featured
+                      </Tag>
+                    )}
+                  </Stack>
+                  <Stack
+                    p={2}
+                    color="gray.500"
+                    direction="row"
+                    alignItems="center"
+                    mt="2"
+                  >
+                    <Stack direction="row" align="center">
+                      <FaBuilding color="gray.600" />
+                      <Box color="gray.600"> {job.company.company_name}</Box>
+                    </Stack>
+                    <Stack direction="row" align="center" ml="4">
+                      <FaCalendarAlt color="gray.600" />
+                      <Box color="gray.600">{job.job_date}</Box>
+                    </Stack>
+                    <Stack direction="row" align="center" ml="4">
+                      <FaDollarSign color="gray.600" />
+                      <Box color="gray.600"> {job.income}</Box>
+                    </Stack>
+                  </Stack>
+                  <Stack
+                    p={2}
+                    direction={{ base: "column", md: "row" }}
+                    justifyContent="space-between"
+                  >
+                    <Text fontSize={{ base: "sm" }} textAlign="left" maxW="4xl">
+                      {job.description}
+                    </Text>
+                    <Stack
+                      direction={{ base: "column", md: "row" }}
+                      alignItems="center"
+                    >
+                      <Button ml="auto" variant="outline" colorScheme="blue">
+                        Apply for Job
+                      </Button>
+                    </Stack>
+                  </Stack>
+                </Card>
+              ))
+            ) : (
+              <p>No matching jobs found.</p>
+            )}
+            {/* Pagination Buttons */}
+            <Stack mb={5} direction="row" mt={4} justify="center" spacing={2}>
+              {[...Array(Math.ceil(jobs.length / jobsPerPage))].map(
+                (_, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    colorScheme={currentPage === index + 1 ? "blue" : "gray"}
+                    onClick={() => handlePaginationClick(index + 1)}
+                  >
+                    {index + 1}
+                  </Button>
+                )
+              )}
             </Stack>
           </GridItem>
-        </Box>
-
-        <GridItem colSpan={{ base: "1", md: "1" }}>
-          {currentFilteredJobs.length > 0 ? (
-            currentFilteredJobs.map((job) => (
-              <Card
-                mb={5}
-                key={job.id}
-                mr={6}
-                p="4"
-                boxShadow="lg"
-                borderRadius="md"
-                bg="white"
-              >
-                <Stack mb={2} direction="row" alignItems="center">
-                  <Image
-                    borderRadius={4}
-                    src={JobLogo}
-                    alt="Company Logo"
-                    boxSize={{ base: "40px", md: "60px" }}
-                    ml={{ base: "0", md: "2" }}
-                  />
-                  <Flex align="center">
-                    <Heading
-                      size={{ base: "md", md: "lg" }}
-                      fontWeight="semibold"
-                    >
-                      {job.title}
-                    </Heading>
-                  </Flex>
-                  <Tag size="md" colorScheme="blue" ml="auto">
-                    {formatJobType(job.job_types)}
-                  </Tag>
-                  {job.job_featured && (
-                    <Tag size="md" colorScheme="green">
-                      Featured
-                    </Tag>
-                  )}
-                </Stack>
-                <Stack
-                  p={2}
-                  color="gray.500"
-                  direction="row"
-                  alignItems="center"
-                  mt="2"
-                >
-                  <Stack direction="row" align="center">
-                    <FaBuilding color="gray.600" />
-                    <Box color="gray.600"> {job.company.company_name}</Box>
-                  </Stack>
-                  <Stack direction="row" align="center" ml="4">
-                    <FaCalendarAlt color="gray.600" />
-                    <Box color="gray.600">{job.job_date}</Box>
-                  </Stack>
-                  <Stack direction="row" align="center" ml="4">
-                    <FaDollarSign color="gray.600" />
-                    <Box color="gray.600"> {job.income}</Box>
-                  </Stack>
-                </Stack>
-                <Stack
-                  p={2}
-                  direction={{ base: "column", md: "row" }}
-                  justifyContent="space-between"
-                >
-                  <Text fontSize={{ base: "sm" }} textAlign="left" maxW="4xl">
-                    {job.description}
-                  </Text>
-                  <Stack
-                    direction={{ base: "column", md: "row" }}
-                    alignItems="center"
-                  >
-                    <Button ml="auto" variant="outline" colorScheme="blue">
-                      Apply for Job
-                    </Button>
-                  </Stack>
-                </Stack>
-              </Card>
-            ))
-          ) : (
-            <p>No matching jobs found.</p>
-          )}
-          {/* Pagination Buttons */}
-          <Stack mb={5} direction="row" mt={4} justify="center" spacing={2}>
-            {[...Array(Math.ceil(jobs.length / jobsPerPage))].map(
-              (_, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  colorScheme={currentPage === index + 1 ? "blue" : "gray"}
-                  onClick={() => handlePaginationClick(index + 1)}
-                >
-                  {index + 1}
-                </Button>
-              )
-            )}
-          </Stack>
-        </GridItem>
-      </Grid>
-    </Stack>
+        </Grid>
+      </Stack>
+    </>
   );
 };
 export default Job;

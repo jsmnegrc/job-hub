@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Link,
@@ -14,6 +14,7 @@ import {
   InputRightElement,
   useToast,
 } from "@chakra-ui/react";
+import { FaUserAlt } from "react-icons/fa";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import http from "../library/http";
@@ -26,6 +27,25 @@ const Login = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/");
+    }
+
+    const handleAuthentication = () => {
+      const updatedToken = localStorage.getItem("token");
+      if (updatedToken) {
+        navigate("/");
+      }
+    };
+
+    window.addEventListener("authenticated", handleAuthentication);
+    return () => {
+      window.removeEventListener("authenticated", handleAuthentication);
+    };
+  }, [navigate]);
+
   async function submit(e) {
     e.preventDefault();
 
@@ -36,15 +56,13 @@ const Login = () => {
       };
 
       const user = await api.post("/login", body);
-      console.log(user);
       localStorage.setItem("token", user.data.token);
       localStorage.setItem("user", JSON.stringify(user.data.user));
 
-      window.dispatchEvent(new Event("storage"));
+      window.dispatchEvent(new Event("authenticated"));
+
       navigate("/");
     } catch (e) {
-      console.log(e.response.data.message);
-
       toast({
         title: "Error",
         description: "Login failed. Please check your credentials.",

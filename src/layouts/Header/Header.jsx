@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -11,17 +12,54 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { FaUserAlt } from "react-icons/fa";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link as ReactRouterLink } from "react-router-dom";
+import http from "../../library/http";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const { isOpen, onToggle } = useDisclosure();
   const bg = useColorModeValue("red.500", "red.200");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+  const navigate = useNavigate();
+
+  const checkToken = () => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    setIsLoggedIn(!!token);
+    setUsername(user ? JSON.parse(user).username : "");
+  };
+
+  useEffect(() => {
+    checkToken();
+    const handleAuthentication = () => {
+      checkToken();
+    };
+
+    window.addEventListener("authenticated", handleAuthentication);
+    return () => {
+      window.removeEventListener("authenticated", handleAuthentication);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    const token = localStorage.getItem("token");
+    const api = http({
+      Authorization: `Bearer ${token}`,
+    });
+    api.post("/logout");
+    localStorage.clear();
+    window.dispatchEvent(new Event("authenticated"));
+    checkToken();
+    navigate("/login");
+  };
 
   return (
     <Box>
       <Flex
-        bg="#1A365D"
+        bg="blue.900"
         color={"white"}
         minH={"60px"}
         py={{ base: 2 }}
@@ -75,34 +113,52 @@ const Header = () => {
           direction={"row"}
           spacing={3}
         >
-          <Button
-            as={"a"}
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"black"}
-            bg={"blue.300"}
-            href={"/login"}
-            _hover={{
-              bg: "blue.50",
-            }}
-          >
-            Login
-          </Button>
-          <Button
-            as={"a"}
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"black"}
-            bg={"blue.300"}
-            href={"/register"}
-            _hover={{
-              bg: "blue.50",
-            }}
-          >
-            Register
-          </Button>
+          {isLoggedIn ? (
+            <>
+              <Stack justify="center" align="center">
+                <FaUserAlt />
+              </Stack>
+              <Stack justify="center" align="center">
+                <Text color="white" fontWeight="bold" mr={2}>
+                  {username}
+                </Text>
+              </Stack>
+              <Button bg={"red.300"} onClick={handleLogout} variant={"solid"}>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                as={"a"}
+                display={{ base: "none", md: "inline-flex" }}
+                fontSize={"sm"}
+                fontWeight={600}
+                color={"black"}
+                bg={"blue.300"}
+                href={"/login"}
+                _hover={{
+                  bg: "blue.50",
+                }}
+              >
+                Login
+              </Button>
+              <Button
+                as={"a"}
+                display={{ base: "none", md: "inline-flex" }}
+                fontSize={"sm"}
+                fontWeight={600}
+                color={"black"}
+                bg={"blue.300"}
+                href={"/register"}
+                _hover={{
+                  bg: "blue.50",
+                }}
+              >
+                Register
+              </Button>
+            </>
+          )}
         </Stack>
       </Flex>
 
