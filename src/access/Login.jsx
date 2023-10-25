@@ -18,7 +18,7 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import http from "../library/http";
 
-const Login = () => {
+const login = () => {
   const api = http();
   const [username, setUsername] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -143,4 +143,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default login;
