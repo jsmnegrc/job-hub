@@ -14,7 +14,6 @@ import {
   InputRightElement,
   useToast,
 } from "@chakra-ui/react";
-import { FaUserAlt } from "react-icons/fa";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import http from "../library/http";

@@ -21,6 +21,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Link,
 } from "@chakra-ui/react";
 import {
   FaCalendarAlt,
@@ -32,6 +33,7 @@ import JobLogo from "../../assets/joblogo.jpg";
 import http from "../../library/http";
 import { useParams } from "react-router-dom";
 import JobHero from "./JobHero";
+import Apply from "../Apply/Apply";
 
 const Job = () => {
   const { jobId } = useParams();
@@ -311,9 +313,11 @@ const Job = () => {
                       direction={{ base: "column", md: "row" }}
                       alignItems="center"
                     >
-                      <Button ml="auto" variant="outline" colorScheme="blue">
-                        Apply for Job
-                      </Button>
+                      <Link href="/apply">
+                        <Button ml="auto" variant="outline" colorScheme="blue">
+                          Apply for Job
+                        </Button>
+                      </Link>
                     </Stack>
                   </Stack>
                 </Card>

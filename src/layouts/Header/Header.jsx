@@ -187,9 +187,6 @@ const DesktopNav = () => {
       <Flex>
         <ReactRouterLink to="/job">Find Job</ReactRouterLink>
       </Flex>
-      <Flex>
-        <ReactRouterLink to="/contact">Contact</ReactRouterLink>
-      </Flex>
     </Stack>
   );
 };
@@ -200,8 +197,7 @@ const MobileNav = () => {
       <Stack color={"white"}>
         <ReactRouterLink to="/">Home</ReactRouterLink>
         <ReactRouterLink to="/about">About</ReactRouterLink>
-        <ReactRouterLink to="/job">Job Board</ReactRouterLink>
-        <ReactRouterLink to="/contact">Contact</ReactRouterLink>
+        <ReactRouterLink to="/job">Find Job</ReactRouterLink>
       </Stack>
 
       <Button

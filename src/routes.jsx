@@ -1,9 +1,9 @@
 import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
 import Job from "./pages/Job/Job";
-import Contact from "./pages/Contact/Contact";
 import Login from "./access/login";
 import Register from "./access/Register";
+import Apply from "./pages/Apply/Apply";
 
 const routes = [
   {
@@ -19,16 +19,16 @@ const routes = [
     element: <Job />,
   },
   {
-    path: "/contact",
-    element: <Contact />,
-  },
-  {
     path: "/login",
     element: <Login />,
   },
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/apply",
+    element: <Apply />,
   },
 ];
 

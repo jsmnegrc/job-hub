@@ -10,5 +10,4 @@ function http(options = {}) {
   });
   return http;
 }
-
 export default http;
